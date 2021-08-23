@@ -1,0 +1,1 @@
+a fully featured MERN stack e-commerce app featuring authentication with firebase and a Swipe payment system.
