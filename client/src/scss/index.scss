@@ -1,0 +1,12 @@
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../../../../bootstrap-5.0.2/scss/functions";
+// 2. Include any default variable overrides here
+@import "variables";
+// 3. Include remainder of required Bootstrap stylesheets
+@import "../../../../bootstrap-5.0.2/scss/mixins";
+@import "../../../../bootstrap-5.0.2/scss/variables";
+// 4. Include any optional Bootstrap components as you like
+@import "optionalBootstrapComponents";
+// 5. Add additional custom code here
+
+svg { vertical-align: baseline; }
