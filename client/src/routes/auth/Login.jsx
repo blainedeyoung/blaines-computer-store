@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { auth } from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, googleAuthProvider } from "../../firebase";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { toast } from "react-toastify";
-import { LoginOutlined } from "@ant-design/icons";
+import { LoginOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 
 const Login = ({ history }) => {
@@ -11,6 +14,26 @@ const Login = ({ history }) => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
+
+  const googleLogin = async () => {
+    signInWithPopup(auth, googleAuthProvider)
+      .then(async (result) => {
+        const { user } = result;
+        const idTokenResult = await user.getIdTokenResult();
+        dispatch({
+          type: "LOGGED_IN_USER",
+          payload: {
+            email: user.email,
+            token: idTokenResult.token,
+          },
+        });
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.message);
+      });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,8 +92,16 @@ const Login = ({ history }) => {
     <div className="container p-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
-          <h4>Login</h4>
+          {loading ? (
+            <h4 className="text-danger">Loading...</h4>
+          ) : (
+            <h4>Login</h4>
+          )}
           {loginForm()}
+          <button onClick={googleLogin} className="btn btn-danger w-100 mt-2">
+            <GoogleOutlined className="mx-2" />
+            Login with Google
+          </button>
         </div>
       </div>
     </div>
